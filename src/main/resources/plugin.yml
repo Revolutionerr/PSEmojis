@@ -1,8 +1,0 @@
-name: PSEmojis
-version: '${project.version}'
-main: revolutioner.net.psemojis.PSEmojis
-api-version: 1.18
-authors: [ Revolutioner, JRabble ]
-description: A simple plugin made only for PlayStrix team which allowes players to send emojis in chat
-commands:
-  emoji: {}
