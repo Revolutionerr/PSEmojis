@@ -63,7 +63,7 @@ public class PSMenu implements Listener, CommandExecutor, TabCompleter {
                 return true;
             }
             if (args[0].equals("test")) {
-                player.sendMessage(plugin.codesAndEmsMap.size() + "");
+                player.sendMessage(plugin.codesAndEmsMap + "");
                 return true;
             }
                 if (args[0].equals("reload")) {
@@ -95,23 +95,26 @@ public class PSMenu implements Listener, CommandExecutor, TabCompleter {
         MenuInvent2.setItem(MenuInvent2.getSize()-1, next);
         MenuInvent2.setItem(MenuInvent.getSize()-9, prev);
         PremInvent.setItem(PremInvent.getSize()-9, prev);
-        for (int i = 0; i < MenuInvent.getSize()-1; i++) {
-            emojeMeta.setDisplayName(ChatColor.RESET + plugin.emojes[i]);
-            emojeMeta.setLore(Arrays.asList(ChatColor.GRAY + lore1[0], ChatColor.GRAY + lore1[1], "", ChatColor.RED + surrounding + plugin.codes[i] + surrounding, "", lore2, lore3));
-            emoje.setItemMeta(emojeMeta);
-            MenuInvent.setItem(i, emoje);
-        }
-        for (int i = MenuInvent.getSize()-1; i < plugin.emojes.length; i++) {
-            emojeMeta.setDisplayName(ChatColor.RESET + plugin.emojes[i]);
-            emojeMeta.setLore(Arrays.asList(ChatColor.GRAY + lore1[0], ChatColor.GRAY + lore1[1], "", ChatColor.RED + surrounding + plugin.codes[i] + surrounding, "", lore2, lore3));
-            emoje.setItemMeta(emojeMeta);
-            MenuInvent2.setItem(i-53, emoje);
-        }
-        for (int i = 0; i < plugin.emojesPrem.length; i++) {
-            emojeMeta.setDisplayName(ChatColor.RESET + plugin.emojesPrem[i]);
-            emojeMeta.setLore(Arrays.asList(ChatColor.GRAY + lore1[0], ChatColor.GRAY + lore1[1], "", ChatColor.RED + surrounding + plugin.codesPrem[i] + surrounding, "", lore2, lore3));
-            emoje.setItemMeta(emojeMeta);
-            PremInvent.setItem(i, emoje);
+        for (String code : plugin.codesAndEmsMap.keySet()) {
+            String ems = plugin.codesAndEmsMap.get(code);
+            for (int i = 0; i < MenuInvent.getSize() - 1; i++) {
+                emojeMeta.setDisplayName(ChatColor.RESET + ems);
+                emojeMeta.setLore(Arrays.asList(ChatColor.GRAY + lore1[0], ChatColor.GRAY + lore1[1], "", ChatColor.RED + surrounding + code + surrounding, "", lore2, lore3));
+                emoje.setItemMeta(emojeMeta);
+                MenuInvent.setItem(i, emoje);
+            }
+            for (int i = MenuInvent.getSize() - 1; i < plugin.emojes.length; i++) {
+                emojeMeta.setDisplayName(ChatColor.RESET + ems);
+                emojeMeta.setLore(Arrays.asList(ChatColor.GRAY + lore1[0], ChatColor.GRAY + lore1[1], "", ChatColor.RED + surrounding + code + surrounding, "", lore2, lore3));
+                emoje.setItemMeta(emojeMeta);
+                MenuInvent2.setItem(i - 53, emoje);
+            }
+            for (int i = 0; i < plugin.emojesPrem.length; i++) {
+                emojeMeta.setDisplayName(ChatColor.RESET + plugin.emojesPrem[i]);
+                emojeMeta.setLore(Arrays.asList(ChatColor.GRAY + lore1[0], ChatColor.GRAY + lore1[1], "", ChatColor.RED + surrounding + plugin.codesPrem[i] + surrounding, "", lore2, lore3));
+                emoje.setItemMeta(emojeMeta);
+                PremInvent.setItem(i, emoje);
+            }
         }
     }
 
@@ -121,16 +124,17 @@ public class PSMenu implements Listener, CommandExecutor, TabCompleter {
         if (p.getOpenInventory().getTitle().equals(page1) || p.getOpenInventory().getTitle().equals(page2) || p.getOpenInventory().getTitle().equals(page3)) {
             final ItemStack clickedItem = e.getCurrentItem();
             if (clickedItem == null || clickedItem.getType().isAir()) return;
-            for (int i = 0; i < plugin.emojes.length; i++) {
+            for (String code : plugin.codesAndEmsMap.keySet()) {
+                String ems = plugin.codesAndEmsMap.get(code);
                 if(e.getClick() == ClickType.LEFT){
-                    if (clickedItem.getItemMeta().getDisplayName().equals(plugin.emojes[i])) {
+                    if (clickedItem.getItemMeta().getDisplayName().equals(ems)) {
                         p.playSound(p.getLocation(), "block.note_block.pling", 0.5F, 2F);
-                        p.chat("!" + plugin.emojes[i]);
+                        p.chat("!" + ems);
                     }
                 }
                 if(e.getClick() == ClickType.RIGHT){
-                    if (clickedItem.getItemMeta().getDisplayName().equals(plugin.emojes[i])) {
-                        p.chat(plugin.emojes[i]);
+                    if (clickedItem.getItemMeta().getDisplayName().equals(ems)) {
+                        p.chat(ems);
                         p.playSound(p.getLocation(), "block.note_block.pling", 0.5F, 1F);
                     }
                 }

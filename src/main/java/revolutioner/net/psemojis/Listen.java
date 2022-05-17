@@ -16,9 +16,10 @@ public class Listen implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         String msg = event.getMessage();
         event.setMessage(msg);
-        for (int i = 0; i < plugin.codes.length; i++) {
-            if (msg.contains(this.surrounding + plugin.codes[i] + this.surrounding)) { // how do i take all the values and compare them
-                msg = msg.replace(this.surrounding + plugin.emojes[i] + this.surrounding, plugin.emojes[i]);
+        for (String code : plugin.codesAndEmsMap.keySet()) {
+            String ems = plugin.codesAndEmsMap.get(code);
+            if (msg.contains(this.surrounding + code + this.surrounding)) { // how do i take all the values and compare them
+                msg = msg.replace(this.surrounding + code + this.surrounding, ems);
                 event.setMessage(msg);
             }
         }
@@ -39,19 +40,22 @@ public class Listen implements Listener {
        Player p = e.getPlayer();
        if (plugin.getConfig().getBoolean("sign")) {
            for (int i = 0; i < 4; ++i) {
-               for (int j = 0; j < plugin.codes.length; j++) {
-                   if (e.getLine(i).contains(this.surrounding + plugin.codes[j] + this.surrounding)) {
-                       e.setLine(i, e.getLine(i).replace(this.surrounding + plugin.codes[j] + this.surrounding, ChatColor.WHITE + "" + plugin.emojes[j]
-                               + ChatColor.RESET));
-                   }
-               }
-               for (int j = 0; j < plugin.codesPrem.length; j++) {
-                   if (e.getLine(i).contains(this.surrounding + plugin.codesPrem[j] + this.surrounding)) {
-                       if (p.hasPermission("psemoji.prem")) {
-                           e.setLine(i, e.getLine(i).replace(this.surrounding + plugin.codesPrem[j] + this.surrounding, ChatColor.WHITE + "" + plugin.emojesPrem[j]
+               for (String code : plugin.codesAndEmsMap.keySet()) {
+                   String ems = plugin.codesAndEmsMap.get(code);
+                   for (int j = 0; j < plugin.codesAndEmsMap.size(); j++) {
+                       if (e.getLine(i).contains(this.surrounding + code + this.surrounding)) {
+                           e.setLine(i, e.getLine(i).replace(this.surrounding + code + this.surrounding, ChatColor.WHITE + "" + ems
                                    + ChatColor.RESET));
-                       } else {
-                           p.sendMessage(ChatColor.RED + notpremtext);
+                       }
+                   }
+                   for (int j = 0; j < plugin.codesPrem.length; j++) {
+                       if (e.getLine(i).contains(this.surrounding + plugin.codesPrem[j] + this.surrounding)) {
+                           if (p.hasPermission("psemoji.prem")) {
+                               e.setLine(i, e.getLine(i).replace(this.surrounding + plugin.codesPrem[j] + this.surrounding, ChatColor.WHITE + "" + plugin.emojesPrem[j]
+                                       + ChatColor.RESET));
+                           } else {
+                               p.sendMessage(ChatColor.RED + notpremtext);
+                           }
                        }
                    }
                }
