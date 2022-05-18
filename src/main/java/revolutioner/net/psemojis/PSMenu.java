@@ -35,12 +35,14 @@ public class PSMenu implements Listener, CommandExecutor, TabCompleter {
     String hint2 = plugin.getConfig().getString("hint2");
     String surrounding = plugin.getConfig().getString("surrounding");
     String notadmintext = plugin.getConfig().getString("notadmintext");
+    int invsize = plugin.getConfig().getInt("invsize");
+    String gridmaterial = plugin.getConfig().getString("gridmaterial");
     String page1 = plugin.getConfig().getString("page1");
     String page2 = plugin.getConfig().getString("page2");
     String page3 = plugin.getConfig().getString("page3");
-    Inventory MenuInvent = Bukkit.getServer().createInventory(null, 54, page1);
-    Inventory MenuInvent2 = Bukkit.getServer().createInventory(null, 54, page2);
-    Inventory PremInvent = Bukkit.getServer().createInventory(null, 54, page3);
+    Inventory MenuInvent = Bukkit.getServer().createInventory(null, invsize, page1);
+    Inventory MenuInvent2 = Bukkit.getServer().createInventory(null, invsize, page2);
+    Inventory PremInvent = Bukkit.getServer().createInventory(null, invsize, page3);
     String notpremtext = plugin.getConfig().getString("notpremtext");
 
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
@@ -48,17 +50,17 @@ public class PSMenu implements Listener, CommandExecutor, TabCompleter {
         if (cmd.getName().equals("emoji")) {
             if (args.length == 0) {
                 player.openInventory(MenuInvent);
-                MenuInv();
+                MenuInv(player);
                 return true;
             }
             if (args[0].equals("info")) {
                 TextComponent.Builder componentBuilder = Component.text()
-                        .append(Component.text(plugin.getName()).color(TextColor.fromHexString("#CFA240")).decorate(TextDecoration.BOLD))
+                        .append(Component.text(plugin.getName()).color(TextColor.fromHexString("#fba7000")).decorate(TextDecoration.BOLD))
                         .append(Component.text(" "))
-                        .append(Component.text(plugin.getDescription().getVersion()).color(TextColor.fromHexString("#CFA240")))
-                        .append(Component.text(" by Revolutioner (JRabble)").color(TextColor.fromHexString("#CFA240"))).append(Component.newline())
-                        .append(Component.text("Плагин позволяет вам использовать смайлики сервера как в чате так и на табличках").color(TextColor.fromHexString("#A57D02")).decorate(TextDecoration.ITALIC)).append(Component.newline())
-                        .append(Component.text("Также чтобы получить доступ ко всем смайликам произведите покупку привилегии").color(TextColor.fromHexString("#A57D02")).decorate(TextDecoration.ITALIC));
+                        .append(Component.text(plugin.getDescription().getVersion()).color(TextColor.fromHexString("#fba700")))
+                        .append(Component.text(" by Revolutioner (JRabble)").color(TextColor.fromHexString("#fba700"))).append(Component.newline())
+                        .append(Component.text("Плагин позволяет вам использовать смайлики сервера как в чате так и на табличках").color(TextColor.fromHexString("#f2ae25")).decorate(TextDecoration.ITALIC)).append(Component.newline())
+                        .append(Component.text("Также чтобы получить доступ ко всем смайликам произведите покупку привилегии").color(TextColor.fromHexString("#f2ae25")).decorate(TextDecoration.ITALIC));
                 sender.sendMessage(componentBuilder.build());
                 return true;
             }
@@ -66,10 +68,23 @@ public class PSMenu implements Listener, CommandExecutor, TabCompleter {
                 player.sendMessage(plugin.codesAndEmsMap + "");
                 return true;
             }
+            for (String code : plugin.codesAndEmsMap.keySet()) {
+                String ems = plugin.codesAndEmsMap.get(code);
+                if (args[0].equals(surrounding + code + surrounding)) {
+                    player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Этот эмодзи выглядит так: " + ChatColor.RESET + ems);
+                    return true;
+                }
+                if (args[0].equals(code)) {
+                    player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Этот эмодзи выглядит так: " + ChatColor.RESET + ems + ChatColor.GRAY + ChatColor.ITALIC + "  \n (Пожалуйста используйте " + ChatColor.RESET + "\":\"" + ChatColor.GRAY + ChatColor.ITALIC + " перед и после кода эмодзи. Пример: :" + args[0] + ":)");
+                    return true;
+                }
+            }
                 if (args[0].equals("reload")) {
                     if (player.hasPermission("psemoji.reload")) {
-                        player.sendMessage(ChatColor.GOLD + "Конфигурация перезагружена!");
                         plugin.reloadConfig();
+                        plugin.getConfig().options().copyDefaults(true);
+                        plugin.saveConfig();
+                        player.sendMessage(ChatColor.GOLD + "Конфигурация перезагружена!");
                         return true;
                     } else {
                         player.sendMessage(ChatColor.RED + notadmintext);
@@ -82,40 +97,49 @@ public class PSMenu implements Listener, CommandExecutor, TabCompleter {
         return true;
     }
 
-    public void MenuInv() {
-        ItemStack emoje = new ItemStack(Material.WHITE_STAINED_GLASS_PANE); ItemMeta emojeMeta = emoje.getItemMeta();
-        String[] lore1 = {hint1, hint2};
+    public void MenuInv(Player p) {
+        ItemStack emoje = new ItemStack(Material.getMaterial(gridmaterial)); ItemMeta emojeMeta = emoje.getItemMeta();
         ItemStack next = new ItemStack(Material.ARROW, 1, (short) 5); ItemMeta npmeta = next.getItemMeta(); npmeta.setDisplayName(ChatColor.GREEN + "След. страница"); next.setItemMeta(npmeta);
         ItemStack prev = new ItemStack(Material.ARROW, 1, (short) 5); ItemMeta pvmeta = next.getItemMeta(); pvmeta.setDisplayName(ChatColor.RED + "Пред. страница"); prev.setItemMeta(pvmeta);
-        String lore2 = ChatColor.BLUE + "[ЛКМ]" + ChatColor.WHITE + " - в глобальный чат";
-        String lore3 = ChatColor.GOLD + "[ПКМ]" + ChatColor.WHITE + " - в локальный чат";
-        npmeta.setDisplayName(ChatColor.GOLD + "Премиум эмодзи");
         next.setItemMeta(npmeta);
         MenuInvent.setItem(MenuInvent.getSize()-1, next);
+        npmeta.setDisplayName(ChatColor.GOLD + "Премиум эмодзи");
+        next.setItemMeta(npmeta);
         MenuInvent2.setItem(MenuInvent2.getSize()-1, next);
         MenuInvent2.setItem(MenuInvent.getSize()-9, prev);
         PremInvent.setItem(PremInvent.getSize()-9, prev);
+        int d = 0;
+        int r = 0;
         for (String code : plugin.codesAndEmsMap.keySet()) {
             String ems = plugin.codesAndEmsMap.get(code);
-            for (int i = 0; i < MenuInvent.getSize() - 1; i++) {
-                emojeMeta.setDisplayName(ChatColor.RESET + ems);
-                emojeMeta.setLore(Arrays.asList(ChatColor.GRAY + lore1[0], ChatColor.GRAY + lore1[1], "", ChatColor.RED + surrounding + code + surrounding, "", lore2, lore3));
-                emoje.setItemMeta(emojeMeta);
-                MenuInvent.setItem(i, emoje);
+            addMets(emoje, emojeMeta, ems, code);
+            if (d<invsize-1 && p.getOpenInventory().getTitle().equals(page1)) {
+                MenuInvent.setItem(d, emoje);
             }
-            for (int i = MenuInvent.getSize() - 1; i < plugin.emojes.length; i++) {
-                emojeMeta.setDisplayName(ChatColor.RESET + ems);
-                emojeMeta.setLore(Arrays.asList(ChatColor.GRAY + lore1[0], ChatColor.GRAY + lore1[1], "", ChatColor.RED + surrounding + code + surrounding, "", lore2, lore3));
-                emoje.setItemMeta(emojeMeta);
-                MenuInvent2.setItem(i - 53, emoje);
+            if (d>invsize-2 && p.getOpenInventory().getTitle().equals(page2)) {
+                MenuInvent2.setItem(d - (invsize-1), emoje);
             }
-            for (int i = 0; i < plugin.emojesPrem.length; i++) {
-                emojeMeta.setDisplayName(ChatColor.RESET + plugin.emojesPrem[i]);
-                emojeMeta.setLore(Arrays.asList(ChatColor.GRAY + lore1[0], ChatColor.GRAY + lore1[1], "", ChatColor.RED + surrounding + plugin.codesPrem[i] + surrounding, "", lore2, lore3));
-                emoje.setItemMeta(emojeMeta);
-                PremInvent.setItem(i, emoje);
+            d++;
+        }
+        if (p.getOpenInventory().getTitle().equals(page3)) {
+            for (String code : plugin.codesAndEmsPremMap.keySet()) {
+                String ems = plugin.codesAndEmsPremMap.get(code);
+                addMets(emoje, emojeMeta, ems, code);
+                if (r < invsize - 1) {
+                    PremInvent.setItem(r, emoje);
+                }
+                r++;
             }
         }
+    }
+
+    public void addMets (ItemStack emoje, ItemMeta emojeMeta, String ems, String code) {
+        String[] lore1 = {hint1, hint2};
+        String lore2 = ChatColor.BLUE + "[ЛКМ]" + ChatColor.WHITE + " - в глобальный чат";
+        String lore3 = ChatColor.GOLD + "[ПКМ]" + ChatColor.WHITE + " - в локальный чат";
+        emojeMeta.setDisplayName(ChatColor.RESET + ems);
+        emojeMeta.setLore(Arrays.asList(ChatColor.GRAY + lore1[0], ChatColor.GRAY + lore1[1], "", ChatColor.RED + surrounding + code + surrounding, "", lore2, lore3));
+        emoje.setItemMeta(emojeMeta);
     }
 
     @EventHandler
@@ -139,16 +163,17 @@ public class PSMenu implements Listener, CommandExecutor, TabCompleter {
                     }
                 }
             }
-            for (int i = 0; i < plugin.emojesPrem.length; i++) {
+            for (String code : plugin.codesAndEmsPremMap.keySet()) {
+                String ems = plugin.codesAndEmsPremMap.get(code);
                 if(e.getClick() == ClickType.LEFT){
-                    if (clickedItem.getItemMeta().getDisplayName().equals(plugin.emojesPrem[i])) {
-                        p.chat("!" + plugin.emojesPrem[i]);
+                    if (clickedItem.getItemMeta().getDisplayName().equals(ems)) {
+                        p.chat("!" + ems);
                         p.playSound(p.getLocation(), "entity.experience_orb.pickup", 0.5F, 1F);
                     }
                 }
                 if(e.getClick() == ClickType.RIGHT){
-                    if (clickedItem.getItemMeta().getDisplayName().equals(plugin.emojesPrem[i])) {
-                        p.chat(plugin.emojesPrem[i]);
+                    if (clickedItem.getItemMeta().getDisplayName().equals(ems)) {
+                        p.chat(ems);
                         p.playSound(p.getLocation(), "entity.experience_orb.pickup", 0.5F, 2F);
                     }
                 }
@@ -158,24 +183,24 @@ public class PSMenu implements Listener, CommandExecutor, TabCompleter {
                 if (p.getOpenInventory().getTitle().equals(page2)) {
                     if (p.hasPermission("psemoji.prem")) {
                         p.openInventory(PremInvent);
-                        MenuInv();
+                        MenuInv(p);
                     } else {
                         p.sendMessage(ChatColor.RED + notpremtext);
                     }
                 }
                 else {
                     p.openInventory(MenuInvent2);
-                    MenuInv();
+                    MenuInv(p);
                 }
             }
             if (clickedItem.getItemMeta().getDisplayName().equals(ChatColor.RED + "Пред. страница")) {
                 if (p.getOpenInventory().getTitle().equals(page3)) {
                     p.openInventory(MenuInvent2);
-                    MenuInv();
+                    MenuInv(p);
                 }
                 else {
                     p.openInventory(MenuInvent);
-                    MenuInv();
+                    MenuInv(p);
                 }
             }
             e.setCancelled(true);

@@ -1,0 +1,35 @@
+public void MenuInv() {
+        ItemStack emoje = new ItemStack(Material.WHITE_STAINED_GLASS_PANE); ItemMeta emojeMeta = emoje.getItemMeta();
+        String[] lore1 = {hint1, hint2};
+        ItemStack next = new ItemStack(Material.ARROW, 1, (short) 5); ItemMeta npmeta = next.getItemMeta(); npmeta.setDisplayName(ChatColor.GREEN + "След. страница"); next.setItemMeta(npmeta);
+        ItemStack prev = new ItemStack(Material.ARROW, 1, (short) 5); ItemMeta pvmeta = next.getItemMeta(); pvmeta.setDisplayName(ChatColor.RED + "Пред. страница"); prev.setItemMeta(pvmeta);
+        String lore2 = ChatColor.BLUE + "[ЛКМ]" + ChatColor.WHITE + " - в глобальный чат";
+        String lore3 = ChatColor.GOLD + "[ПКМ]" + ChatColor.WHITE + " - в локальный чат";
+        MenuInvent.setItem(MenuInvent.getSize()-1, next);
+        MenuInvent2.setItem(MenuInvent2.getSize()-1, next);
+        next.setItemMeta(npmeta);
+        MenuInvent2.setItem(MenuInvent.getSize()-9, prev);
+        npmeta.setDisplayName(ChatColor.GOLD + "Премиум эмодзи");
+        PremInvent.setItem(PremInvent.getSize()-9, prev);
+        for (String code : plugin.codesAndEmsMap.keySet()) {
+            String ems = plugin.codesAndEmsMap.get(code);
+            for (int i = 0; i < MenuInvent.getSize() - 1; i++) {
+                emojeMeta.setDisplayName(ChatColor.RESET + ems);
+                emojeMeta.setLore(Arrays.asList(ChatColor.GRAY + lore1[0], ChatColor.GRAY + lore1[1], "", ChatColor.RED + surrounding + code + surrounding, "", lore2, lore3));
+                emoje.setItemMeta(emojeMeta);
+                MenuInvent.setItem(i, emoje);
+            }
+            for (int i = MenuInvent.getSize() - 1; i < plugin.codesAndEmsMap.size(); i++) {
+                emojeMeta.setDisplayName(ChatColor.RESET + ems);
+                emojeMeta.setLore(Arrays.asList(ChatColor.GRAY + lore1[0], ChatColor.GRAY + lore1[1], "", ChatColor.RED + surrounding + code + surrounding, "", lore2, lore3));
+                emoje.setItemMeta(emojeMeta);
+                MenuInvent2.setItem(i - 53, emoje);
+            }
+            for (int i = 0; i < plugin.emojesPrem.length; i++) {
+                emojeMeta.setDisplayName(ChatColor.RESET + plugin.emojesPrem[i]);
+                emojeMeta.setLore(Arrays.asList(ChatColor.GRAY + lore1[0], ChatColor.GRAY + lore1[1], "", ChatColor.RED + surrounding + plugin.codesPrem[i] + surrounding, "", lore2, lore3));
+                emoje.setItemMeta(emojeMeta);
+                PremInvent.setItem(i, emoje);
+            }
+        }
+    }

@@ -16,6 +16,12 @@ page1: Playstrix Эмодзи [стр. 1]
 page2: Playstrix Эмодзи [стр. 2]
 page3: Playstrix Премиум Эмодзи ⭐
 
+# Размер инвентаря (36/45/54)
+invsize: 54
+
+# Материал сетки эмодзи
+gridmaterial: WHITE_STAINED_GLASS_PANE
+
 # Подсказки как использовать эмодзи в меню
 hint1: Для того чтобы использовать этот эмодзи в чате
 hint2: введите его код или же нажмите на предмет
@@ -90,6 +96,6 @@ codesAndEms:
 
 # Коды, символы премиум эмодзи
 codesAndEmsPrem:
-  - bigpog: ᄻ
-  - bigpig: ᄼ
-  - bigfox: ᄽ
+  bigpog: ᄻ
+  bigpig: ᄼ
+  bigfox: ᄽ
