@@ -64,10 +64,6 @@ public class PSMenu implements Listener, CommandExecutor, TabCompleter {
                 sender.sendMessage(componentBuilder.build());
                 return true;
             }
-            if (args[0].equals("test")) {
-                player.sendMessage(plugin.codesAndEmsMap + "");
-                return true;
-            }
             for (String code : plugin.codesAndEmsMap.keySet()) {
                 String ems = plugin.codesAndEmsMap.get(code);
                 if (args[0].equals(surrounding + code + surrounding)) {
