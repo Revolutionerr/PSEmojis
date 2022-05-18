@@ -18,7 +18,7 @@ public class Listen implements Listener {
         event.setMessage(msg);
         for (String code : plugin.codesAndEmsMap.keySet()) {
             String ems = plugin.codesAndEmsMap.get(code);
-            if (msg.contains(this.surrounding + code + this.surrounding)) { // how do i take all the values and compare them
+            if (msg.contains(this.surrounding + code + this.surrounding)) {
                 msg = msg.replace(this.surrounding + code + this.surrounding, ems);
                 event.setMessage(msg);
             }

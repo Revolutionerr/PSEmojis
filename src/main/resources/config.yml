@@ -3,35 +3,35 @@
 # |                      PSEmoji                         | #
 # +------------------------------------------------------+ #
 #
-
-
+#
+#
 # Использовать эмодзи на табличках
 sign: true
-
+#
 # Символ обводки кода эмодзи
 surrounding: ':'
-
-# Названия страниц меню
+#
+# Названия страниц менюs
 page1: Playstrix Эмодзи [стр. 1]
 page2: Playstrix Эмодзи [стр. 2]
 page3: Playstrix Премиум Эмодзи ⭐
-
+#
 # Размер инвентаря (36/45/54)
 invsize: 54
-
+#
 # Материал сетки эмодзи
 gridmaterial: WHITE_STAINED_GLASS_PANE
-
+#
 # Подсказки как использовать эмодзи в меню
 hint1: Для того чтобы использовать этот эмодзи в чате
 hint2: введите его код или же нажмите на предмет
-
+#
 # Сообщение если нету доступа
 notpremtext: У вас нету привилегии для доступа к примиум эмодзи!
-
+#
 # Сообщение если нету доступа к админ-командам
 notadmintext: У вас нету доступа к данной команде!
-
+#
 # Коды, символы обычных эмодзи
 codesAndEms:
   pog: ᄀ
@@ -93,9 +93,26 @@ codesAndEms:
   vrunishka: ᄸ
   who: ᄹ
   zhdun: ᄺ
-
+  heart: ᄼ
+  fire: ᄽ
+  69: ᄾ
+  discord: ᄿ
+  dyphoy: ᅀ
+  rev: ᅁ
+  spayron: ᅂ
+  spruh: ᅃ
+  vovari: ᅄ
+#
 # Коды, символы премиум эмодзи
 codesAndEmsPrem:
   bigpog: ᄻ
-  bigpig: ᄼ
-  bigfox: ᄽ
+  halfheart: ᅅ
+  drinking: ᅆ
+  popcat: ᅇ
+  pepodisco: ᅈ
+  rainbowpog: ᅉ
+  wha: ᅊ
+  pikachu: ᅋ
+  rainbow: ᅌ
+  shop: ᅍ
+  imperatrice: ᅎ

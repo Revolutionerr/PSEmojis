@@ -212,7 +212,7 @@ public class PSMenu implements Listener, CommandExecutor, TabCompleter {
 
     public List<String> complete(CommandSender sender, String[] args) {
         if (args.length == 1)
-            return Lists.newArrayList("info", "reload");
+            return Lists.newArrayList("info", "reload", ":эмодзи:");
         return Lists.newArrayList();
     }
 

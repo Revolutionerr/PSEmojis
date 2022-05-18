@@ -10,7 +10,7 @@ import java.util.Map;
 
 public final class PSEmojis extends JavaPlugin {
     public static PSEmojis plugin;
-    public Map<String, String> codesAndEmsMap = new HashMap<String, String>(); // dont really know how to take values from map and compare them with keys
+    public Map<String, String> codesAndEmsMap = new HashMap<String, String>();
     public Map<String, String> codesAndEmsPremMap = new HashMap<String, String>();
 
     @Override
@@ -20,9 +20,10 @@ public final class PSEmojis extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new Listen(), this);
         getServer().getPluginManager().registerEvents(new PSMenu(), this);;
         getCommand("emoji").setExecutor(new PSMenu());
+        addDefaults();
         reloadConfig();
         getConfig().options().copyDefaults(true);
-        saveConfig();
+        saveDefaultConfig();
         setCodesAndEms();
     }
 
@@ -38,6 +39,20 @@ public final class PSEmojis extends JavaPlugin {
         for(String key : getConfig().getConfigurationSection("codesAndEmsPrem").getKeys(false)) {
             codesAndEmsPremMap.put(key, getConfig().getString("codesAndEmsPrem." + key));
         }
+    }
+
+    public void addDefaults () {
+        getConfig().addDefault("sign", true);
+        getConfig().addDefault("surrounding", ":");
+        getConfig().addDefault("page1", "Playstrix Эмодзи [стр. 1]");
+        getConfig().addDefault("page2", "Playstrix Эмодзи [стр. 2]");
+        getConfig().addDefault("page3", "Playstrix Премиум Эмодзи ⭐");
+        getConfig().addDefault("invsize", 54);
+        getConfig().addDefault("gridmaterial", "WHITE_STAINED_GLASS_PANE");
+        getConfig().addDefault("hint1", "Для того чтобы использовать этот эмодзи в чате");
+        getConfig().addDefault("hint2", "введите его код или же нажмите на предмет");
+        getConfig().addDefault("notpremtext", "У вас нету привилегии для доступа к примиум эмодзи!");
+        getConfig().addDefault("notadmintext", "У вас нету доступа к данной команде!");
     }
 }
 
