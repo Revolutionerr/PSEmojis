@@ -98,12 +98,7 @@ public class PSMenu implements Listener, CommandExecutor, TabCompleter {
         ItemStack next = new ItemStack(Material.ARROW, 1, (short) 5); ItemMeta npmeta = next.getItemMeta(); npmeta.setDisplayName(ChatColor.GREEN + "След. страница"); next.setItemMeta(npmeta);
         ItemStack prev = new ItemStack(Material.ARROW, 1, (short) 5); ItemMeta pvmeta = next.getItemMeta(); pvmeta.setDisplayName(ChatColor.RED + "Пред. страница"); prev.setItemMeta(pvmeta);
         next.setItemMeta(npmeta);
-        MenuInvent.setItem(MenuInvent.getSize()-1, next);
-        npmeta.setDisplayName(ChatColor.GOLD + "Премиум эмодзи");
-        next.setItemMeta(npmeta);
-        MenuInvent2.setItem(MenuInvent2.getSize()-1, next);
-        MenuInvent2.setItem(MenuInvent.getSize()-9, prev);
-        PremInvent.setItem(PremInvent.getSize()-9, prev);
+
         int d = 0;
         int r = 0;
         for (String code : plugin.codesAndEmsMap.keySet()) {
@@ -127,6 +122,12 @@ public class PSMenu implements Listener, CommandExecutor, TabCompleter {
                 r++;
             }
         }
+        MenuInvent.setItem(MenuInvent.getSize()-1, next);
+        npmeta.setDisplayName(ChatColor.GOLD + "Премиум эмодзи");
+        next.setItemMeta(npmeta);
+        MenuInvent2.setItem(MenuInvent2.getSize()-1, next);
+        MenuInvent2.setItem(MenuInvent.getSize()-9, prev);
+        PremInvent.setItem(PremInvent.getSize()-9, prev);
     }
 
     public void addMets (ItemStack emoje, ItemMeta emojeMeta, String ems, String code) {
